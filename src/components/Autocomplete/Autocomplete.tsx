@@ -37,6 +37,10 @@ const Autocomplete = ({
         id="autocomplete-paper"
       >
         {options.map((option) => {
+          if (value.includes(option.value)) {
+            return null;
+          }
+
           return (
             <div
               onMouseDown={(e) => {
