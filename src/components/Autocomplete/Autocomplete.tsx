@@ -25,8 +25,6 @@ const Autocomplete = ({
       });
 
       setSelectedTag(undefined);
-
-      return null;
     };
 
     if (options.length === 0) return null;
@@ -39,8 +37,11 @@ const Autocomplete = ({
         {options.map((option) => {
           return (
             <div
-              onClick={() => handleAddingOption(option.value)}
-              className="flex cursor-pointer items-center gap-4 px-4 py-2"
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                handleAddingOption(option.value);
+              }}
+              className="flex w-full items-center gap-4 px-4 py-2"
               key={option.value}
             >
               <img
@@ -61,31 +62,39 @@ const Autocomplete = ({
   const renderSelectedChips = () => {
     const handleOptionDelete = (val: string | undefined) => {
       onChange((prev) => prev.filter((elem) => elem !== val));
-
-      return null;
     };
 
-    return value.map((option, index) => {
+    const chips = value.map((option) => {
       const result = inputOptions.filter((elem) => elem.value === option)[0];
 
-      return (
-        <div
-          key={result?.value}
-          style={{ border: selectedTag === index ? "solid 1px blue" : "none" }}
-          className="m-1 flex w-fit items-center gap-1 rounded-full bg-sky-100 px-2 py-1"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <img
-            className="h-6 w-6 rounded-full object-cover"
-            src={result?.image}
-          />
-          <span>{result?.label}</span>
-          <button onClick={() => handleOptionDelete(result?.value)}>
-            <CrossIcon />
-          </button>
-        </div>
-      );
+      return result;
     });
+
+    return (
+      <>
+        {chips.map((chip, index) => {
+          return (
+            <div
+              key={chip?.value}
+              style={{
+                border: selectedTag === index ? "solid 1px blue" : "none",
+              }}
+              className="m-1 flex w-fit items-center gap-1 rounded-full bg-sky-100 px-2 py-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                className="h-6 w-6 rounded-full object-cover"
+                src={chip?.image}
+              />
+              <span>{chip?.label}</span>
+              <button onClick={() => handleOptionDelete(chip?.value)}>
+                <CrossIcon />
+              </button>
+            </div>
+          );
+        })}
+      </>
+    );
   };
 
   const handleInputKeyDown = (e: unknown) => {
