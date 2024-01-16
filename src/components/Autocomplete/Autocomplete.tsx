@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { type ReactElement, useRef, useState } from "react";
 import CrossIcon from "~/icons/CrossIcon";
 import { type AutocompleteProps, type OptionType } from "~/types";
@@ -97,7 +99,8 @@ const Autocomplete = ({
     );
   };
 
-  const handleInputKeyDown = (e: unknown) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleInputKeyDown = (e: any) => {
     if (e?.key.toLowerCase() === "backspace" && e?.target?.value === "") {
       if (selectedTag === undefined) {
         setSelectedTag(value.length - 1);
@@ -113,8 +116,8 @@ const Autocomplete = ({
       }
     }
 
-    setTextValue(e.target.value);
-    onTextChange(e.target.value);
+    setTextValue(e.target.value as string);
+    onTextChange(e.target.value as string);
 
     return null;
   };

@@ -1,3 +1,5 @@
+import { OptionType } from "~/types";
+
 export const inputOptions: OptionType[] = [
     {
       label: "Muneeb",
